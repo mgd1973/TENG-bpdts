@@ -1,0 +1,296 @@
+{
+	"info": {
+		"_postman_id": "819fc107-622b-4822-bdd8-fd09f6b1dbc0",
+		"name": "Happy_Path_Validation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "citySearch_userReturnedFromSearch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1e891714-4ea4-4d65-a1df-cd7dc8b1ecf8",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"var Ajv = require('ajv'),\r",
+							"    ajv = new Ajv({logger: console}),\r",
+							"    schema = {\r",
+							"        \"required\":[\r",
+							"            \"Id\",\r",
+							"            \"first_name\",\r",
+							"            \"last_name\",\r",
+							"            \"email\",\r",
+							"            \"ip_address\",\r",
+							"            \"latitude\",\r",
+							"            \"longitude\",\r",
+							"        ],\r",
+							"        \"properties\": {\r",
+							"            \"id\": { \"type\": \"integer\" },\r",
+							"            \"first_name\":   { \"type\": \"string\" },\r",
+							"            \"last_name\":    { \"type\": \"string\" },\r",
+							"            \"email\":        { \"type\": \"string\" },\r",
+							"            \"ip_address\":   { \"type\": \"string\" },\r",
+							"            \"latitude\":     { \"type\": \"integer\" },\r",
+							"            \"longitude\":    { \"type\": \"integer\" },\r",
+							"        },\r",
+							"};\r",
+							"\r",
+							"pm.test('Schema is valid and contains expected elements', function() {\r",
+							"    pm.expect(ajv.validate(schema, pm.response.json())).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BPDTS_BASE_URL}}/city/Madrid/users",
+					"host": [
+						"{{BPDTS_BASE_URL}}"
+					],
+					"path": [
+						"city",
+						"Madrid",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "citySearch_userNotReturnedFromSearch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "42625344-9323-4842-a69d-050151c98640",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response Array is empty\", function() {\r",
+							"    pm.expect([]).to.be.empty;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BPDTS_BASE_URL}}/city/Manchester/users",
+					"host": [
+						"{{BPDTS_BASE_URL}}"
+					],
+					"path": [
+						"city",
+						"Manchester",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userSearch_userReturnedFromSearch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5302736b-35f8-491b-a7d9-f3fbc9c019d6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Correct user '123' returned in response\", function() {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(123);\r",
+							"})\r",
+							"\r",
+							"var Ajv = require('ajv'),\r",
+							"    ajv = new Ajv({logger: console}),\r",
+							"    schema = {\r",
+							"    \"required\":[\r",
+							"            \"Id\",\r",
+							"            \"first_name\",\r",
+							"            \"last_name\",\r",
+							"            \"email\",\r",
+							"            \"ip_address\",\r",
+							"            \"latitude\",\r",
+							"            \"longitude\",\r",
+							"            \"city\",\r",
+							"        ],\r",
+							"    \"properties\": {\r",
+							"            \"id\":           { \"type\": \"integer\" },\r",
+							"            \"first_name\":   { \"type\": \"string\" },\r",
+							"            \"last_name\":    { \"type\": \"string\" },\r",
+							"            \"email\":        { \"type\": \"string\" },\r",
+							"            \"ip_address\":   { \"type\": \"string\" },\r",
+							"            \"latitude\":     { \"type\": \"integer\" },\r",
+							"            \"longitude\":    { \"type\": \"integer\" },\r",
+							"            \"city\":         { \"type\": \"string\" },\r",
+							"        },\r",
+							"};\r",
+							"\r",
+							"pm.test('Schema is valid and contains expected element', function() {\r",
+							"    pm.expect(ajv.validate(schema, pm.response.json())).to.be.true;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BPDTS_BASE_URL}}/user/123",
+					"host": [
+						"{{BPDTS_BASE_URL}}"
+					],
+					"path": [
+						"user",
+						"123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "usersSearch_allUsersReturnedFromSearch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "58bf0a05-5746-4050-bf0c-478770d1bce2",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"var Ajv = require('ajv'),\r",
+							"    ajv = new Ajv({logger: console}),\r",
+							"    schema = {\r",
+							"        \"required\":[\r",
+							"            \"Id\",\r",
+							"            \"first_name\",\r",
+							"            \"last_name\",\r",
+							"            \"email\",\r",
+							"            \"ip_address\",\r",
+							"            \"latitude\",\r",
+							"            \"longitude\",\r",
+							"        ],\r",
+							"        \"properties\": {\r",
+							"            \"id\": { \"type\": \"integer\" },\r",
+							"            \"first_name\":   { \"type\": \"string\" },\r",
+							"            \"last_name\":    { \"type\": \"string\" },\r",
+							"            \"email\":        { \"type\": \"string\" },\r",
+							"            \"ip_address\":   { \"type\": \"string\" },\r",
+							"            \"latitude\":     { \"type\": \"integer\" },\r",
+							"            \"longitude\":    { \"type\": \"integer\" },\r",
+							"        },\r",
+							"};\r",
+							"\r",
+							"pm.test('Schema is valid and contains expected elements', function() {\r",
+							"    pm.expect(ajv.validate(schema, pm.response.json())).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BPDTS_BASE_URL}}/users",
+					"host": [
+						"{{BPDTS_BASE_URL}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "usersSearch_allUsersReturnedFromSearchUsingWildcard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7fcd1a77-606b-4dbe-a02f-3de221315c76",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"var Ajv = require('ajv'),\r",
+							"    ajv = new Ajv({logger: console}),\r",
+							"    schema = {\r",
+							"        \"required\":[\r",
+							"            \"Id\",\r",
+							"            \"first_name\",\r",
+							"            \"last_name\",\r",
+							"            \"email\",\r",
+							"            \"ip_address\",\r",
+							"            \"latitude\",\r",
+							"            \"longitude\",\r",
+							"        ],\r",
+							"        \"properties\": {\r",
+							"            \"id\": { \"type\": \"integer\" },\r",
+							"            \"first_name\":   { \"type\": \"string\" },\r",
+							"            \"last_name\":    { \"type\": \"string\" },\r",
+							"            \"email\":        { \"type\": \"string\" },\r",
+							"            \"ip_address\":   { \"type\": \"string\" },\r",
+							"            \"latitude\":     { \"type\": \"integer\" },\r",
+							"            \"longitude\":    { \"type\": \"integer\" },\r",
+							"        },\r",
+							"};\r",
+							"\r",
+							"pm.test('Schema is valid and contains expected elements', function() {\r",
+							"    pm.expect(ajv.validate(schema, pm.response.json())).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BPDTS_BASE_URL}}/users?",
+					"host": [
+						"{{BPDTS_BASE_URL}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,0 +1,47 @@
+{
+	"info": {
+		"_postman_id": "4a67bfc2-c950-4db0-bbc3-c347b3e24c98",
+		"name": "Error_Leg_Validation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "userSearch_userNotReturnedFromSearch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fcef3243-d61d-4330-9f43-0731c2737e7c",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User does not exist\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.include(\"Id 1001 doesn't exist\")\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BPDTS_BASE_URL}}/user/1001",
+					"host": [
+						"{{BPDTS_BASE_URL}}"
+					],
+					"path": [
+						"user",
+						"1001"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
